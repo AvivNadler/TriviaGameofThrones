@@ -1,0 +1,49 @@
+﻿.container {
+  text-align:center;
+  justify-content:center;
+  align-items:center;
+  align-content:center;
+
+}
+.center{
+    margin:auto
+}
+#Welcome{
+    text-align:center
+        color: #4285F4;
+}
+    img {
+            width: 200px;
+            height: auto;
+        }
+
+         .content{
+             text-align:center;
+         }
+         #btnBackToSettings {
+             margin:auto;
+             display: block;
+             
+         }
+         #timerPH {
+             display: inline-block; /* keeps container wrapped tight to content */
+             position: absolute; /* to absolutely position element */
+             top: 0;
+             left: 50%; /* part1 of centering with translateX/Y */
+             transform: translateX(-50%); /* part2 of centering with translateX/Y */
+             white-space: nowrap; /* text lines will collapse without this */
+             padding: 5px;
+             background-color: darkgreen;
+             color: #ffffff;
+             direction:rtl;
+         }
+         #questionPH{
+             font-size:20px;
+             font-weight:bolder;
+         }
+         #Score {
+             font-size: 20px;
+             color: indianred;
+             font-weight:bolder;
+         }
+

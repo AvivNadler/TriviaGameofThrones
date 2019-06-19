@@ -1,0 +1,6 @@
+C:\Users\אביב נדלר\Desktop\GOT Trivia\GOT Trivia\GOT Trivia\bin\GOT Trivia.dll.config
+C:\Users\אביב נדלר\Desktop\GOT Trivia\GOT Trivia\GOT Trivia\bin\GOT Trivia.dll
+C:\Users\אביב נדלר\Desktop\GOT Trivia\GOT Trivia\GOT Trivia\bin\GOT Trivia.pdb
+C:\Users\אביב נדלר\Desktop\GOT Trivia\GOT Trivia\GOT Trivia\obj\Debug\GOT Trivia.csprojResolveAssemblyReference.cache
+C:\Users\אביב נדלר\Desktop\GOT Trivia\GOT Trivia\GOT Trivia\obj\Debug\GOT Trivia.dll
+C:\Users\אביב נדלר\Desktop\GOT Trivia\GOT Trivia\GOT Trivia\obj\Debug\GOT Trivia.pdb

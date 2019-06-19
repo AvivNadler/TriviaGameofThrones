@@ -1,0 +1,644 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+   
+    <title>GOT Trivia</title>
+
+    <link rel="icon" type="image/png" href="icon/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="icon/favicon-16x16.png" sizes="16x16" />
+
+
+    <link href="Style.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <script src="gotJsondata.js"> </script>
+
+  
+    <script>
+
+        questions = [
+               {
+                   "question": "Who is sibling of ",
+                   "character": "",
+                   "answer": "",
+               },
+               {
+                   question: "Who has killed ",
+                   character: "",
+                   answer: "",
+               },
+               {
+                   question: "Who playes  ",
+                   character: "",
+                   answer: "",
+               },
+               {
+                   question: "Who was killed by ",
+                   character: "",
+                   answer: "",
+               },
+               {
+                   question: "What is the house of ",
+                   character: "",
+                   answer: "",
+               }
+        ];
+    </script>
+
+
+
+    
+
+
+
+</head>
+<body onload="init()" background="https://images4.alphacoders.com/674/674675.jpg" >
+    
+    <div class="container">
+        <div class="content">
+            <audio controls="controls">
+                <source src="Audio/Game%20of%20Thrones%20Intro%20Music.mp3" type="audio/mp3" />
+            </audio>
+            <div id="Welcome">
+                <h1>Game of Thrones Trivia Game</h1>
+            </div>
+
+
+
+
+            <div id="menu" class="btn-group">
+                <br />
+                <input id="btnRestart" type="button" class="btn btn-primary" value="Home" onclick="init(), clearInterval(timerShowed), clearTimeout(timer)" />
+
+                <div class="btn-group">
+                    <input id="btnSettings" type="button" class="btn btn-primary dropdown-toggle" value="Settings" data-toggle="dropdown" onclick="settings()" />
+
+                    <ul class="dropdown-menu" role="menu">
+                        <li><input id="btnSetTime" class="btn btn-primary" type="button" value="Change Timer" onclick="TimeSettings()" /></li>
+                        <li><input id="btnSetLives" class="btn btn-primary" type="button" value="Change Lives" onclick="LivesSettings()" /></li>
+                        <li><input id="btnSetScore" class="btn btn-primary" type="button" value="Change Score" onclick="ScoreSettings()" /></li>
+                    </ul>
+
+                </div>
+
+
+
+                <input id="btnINstructions" type="button" class="btn btn-primary" value="Instructions" data-toggle="modal" onclick="instructions()" data-target="#myModal"  />
+                <input id="btnStart" type="button" class="btn btn-primary" value="New Game" onclick="NewGame()" />
+                <input id="btnStart" type="button" class="btn btn-primary" value="Continue" onclick="Continue()" />
+            </div>
+            <div class="gamedata">
+                <div class="row">
+                    <div class="col-xs-3 text-right">
+                        <span id="timerPH"></span>
+                       
+
+                    </div>
+
+                    <div class="col-xs-6" >
+                        <div id="questionPH" class="row">
+                        </div>
+                        <div id="answersPH" class="row">
+                            <input id="btnAnswer0" type="button" value="answer0" class="btn btn-success" onclick="checkIfTrue('btnAnswer0')" />
+                            <input id="btnAnswer1" type="button" value="answer1" class="btn btn-success" onclick="checkIfTrue('btnAnswer1')" />
+                            <input id="btnAnswer2" type="button" value="answer2" class="btn btn-success btn-rounded" onclick="checkIfTrue('btnAnswer2')" />
+                            <input id="btnAnswer3" type="button" value="answer3" class="btn btn-success btn-rounded" onclick="checkIfTrue('btnAnswer3')" />
+                        </div> 
+                        <div class="row" id="Score"></div>
+
+
+                    </div>
+                    <div class="col-xs-3 text-left" id="imgPH">
+
+
+                    </div>
+                </div>
+                <!--<div class="row">
+                    <div id="answersPH">
+
+                        <input id="btnAnswer0" type="button" value="answer0" onclick="checkIfTrue('btnAnswer0')" />
+                        <input id="btnAnswer1" type="button" value="answer1" onclick="checkIfTrue('btnAnswer1')" />
+                        <input id="btnAnswer2" type="button" value="answer2" onclick="checkIfTrue('btnAnswer2')" />
+                        <input id="btnAnswer3" type="button" value="answer3" onclick="checkIfTrue('btnAnswer3')" />
+
+                    </div>
+                </div>-->
+                <!--<div id="Score">
+
+
+                </div>-->
+            </div>
+            <div id="settingsPH" >
+                <!--<input id="btnSetTime" type="button" value="Change Timer" onclick="TimeSettings()" />
+                <input id="btnSetLives" type="button" value="Change Lives" onclick="LivesSettings()" />
+                <input id="btnSetScore" type="button" value="Change Score" onclick="ScoreSettings()" />-->
+                <input id="btnBackToSettings" type="button" class="btn btn-info" value=" back" onclick="settings()" />
+                <br />
+
+                <div id="setTimerPH">
+                    <p> "please insert the number of second you want the timer will be: "</p>
+                    <br />
+                    <input id="timerSetting" type="text" value="" />
+                    <input id="btnTimerSet" type="button" class="btn btn-success" value="OK" onclick="setTimer()" />
+                </div>
+
+                <div id="setLivesPH">
+                    <p> "please insert the number of lives you want every game: "</p>
+                    <br />
+                    <input id="livesSetting" type="text" value="" />
+                    <input id="btnLivesSet" type="button" class="btn btn-success" value="OK" onclick="setLives()" />
+                </div>
+
+                <div id="setScorePH">
+                    <p> "please insert the number of points you want every right answer: "</p>
+                    <br />
+                    <input id="scoreSetting" type="text" value="" />
+                    <input id="btnScoreSet" type="button" class="btn btn-success" value="OK" onclick="setScore()" />
+                </div>
+            </div>
+
+            <div id="instructionsPH">
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close btn btn-danger" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Instructions</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    To start a new game, click the "New Game" button. If you already strated a game before or if you changed settings before, you can click the "Continue" button and continue from where you stopped. <br />
+                                    In every stage you can click the "Home" button and go back to the main page.<br />
+                                    Before starting a new game, you can always change it's settings by clicking on the "Settings" button
+                                </p>
+                                <br />
+                                <p>
+                                    The game:
+                                    <br />
+                                    Every turn you are asked a diffrent question about one of the characters in Game Of Thrones. <br />
+                                    You should click the button that represents the answer you think is right. If you're right you get 10 points, otherwise you lose 10 points. <br />
+                                    Every round has 5 seconds to answer. If you run out of time, you lose the turn. <br />
+                                    In each game you get 3 lives, which means you have 3 wrong answers or turns you didn't answer in time.<br />
+                                    You are able to change settings as you want (lives, scores, timer).
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        progressArr = [];
+        settingsArr = []
+        timeSetted = 5000;
+        liveSetted = 3;
+        scoreSetted = 10;
+        timer = null;
+        timerShowed = null;
+        score = 0;
+        lives = 0;
+        scoreCon = 0;
+        livesCon = 0;
+
+        function init() { //Home page, restart
+
+
+            clearTimeout(timer);
+            clearInterval(timerShowed);
+            document.getElementById("questionPH").style.display = "none";
+            document.getElementById("timerPH").style.display = "none";
+            document.getElementById("answersPH").style.display = "none";
+            document.getElementById("Score").style.display = "none";
+            document.getElementById("imgPH").style.display = "none";
+            document.getElementById("btnSetTime").style.display = "none";
+            document.getElementById("btnSetLives").style.display = "none";
+            document.getElementById("btnSetScore").style.display = "none";
+            document.getElementById("btnBackToSettings").style.display = "none";
+            document.getElementById("setTimerPH").style.display = "none";
+            document.getElementById("setLivesPH").style.display = "none";
+            document.getElementById("setScorePH").style.display = "none";
+            document.getElementById("instructionsPH").style.display = "none";
+
+
+        }
+
+        function Continue() {
+
+            if (localStorage["settings"]) {
+                settingsArr = JSON.parse(localStorage["settings"]);
+                settingsSaved = settingsArr[0];
+                scoreSetted = settingsSaved.score;
+                liveSetted = settingsSaved.lives;
+                timeSetted = settingsSaved.time;
+            }
+
+            if (localStorage["progress"]) {
+                progressAr = JSON.parse(localStorage["progress"]);
+                progress = progressAr[0];
+                scoreCon = progress.score;
+                livesCon = progress.life;
+            }
+
+            NewGame();
+
+        }
+
+        function saveData() {
+
+            let scoreSaved = score;
+            let lifeSaved = lives;
+
+            let scoreSettedSaved = scoreSetted;
+            let lifeSettedSaved = liveSetted;
+            let timeSettedSaved = timeSetted;
+
+            progress = {
+                score: scoreSaved,
+                life: lifeSaved
+            }
+
+            settingsSaved = {
+                score: scoreSettedSaved,
+                lives: lifeSettedSaved,
+                time: timeSettedSaved
+            }
+
+            progressArr.length = 0;
+            progressArr.push(progress);
+
+            settingsArr.length = 0;
+            settingsArr.push(settingsSaved)
+
+            localStorage["progress"] = JSON.stringify(progressArr);
+            localStorage["settings"] = JSON.stringify(settingsArr);
+
+
+
+        }
+
+
+
+        function instructions() {
+            init();
+            document.getElementById("instructionsPH").style.display = "block";
+            
+        }
+
+
+
+        function settings() {
+
+            init();
+            document.getElementById("btnSetTime").style.display = "block";
+            document.getElementById("btnSetLives").style.display = "block";
+            document.getElementById("btnSetScore").style.display = "block";
+        }
+
+        function TimeSettings() {
+
+            document.getElementById("setLivesPH").style.display = "none";
+            document.getElementById("setScorePH").style.display = "none";
+            document.getElementById("btnSetLives").style.display = "none";
+            document.getElementById("btnSetScore").style.display = "none";
+            document.getElementById("setTimerPH").style.display = "block";
+            document.getElementById("btnBackToSettings").style.display = "block";
+        }
+
+        function setTimer() {
+
+
+            if (isNaN(document.getElementById("timerSetting").value) || document.getElementById("timerSetting").value == "") {
+                alert("please insert a number");
+            }
+            else {
+                timeSetted = document.getElementById("timerSetting").value * 1000;
+                saveData();
+            }
+        }
+
+        function LivesSettings() {
+
+            document.getElementById("setTimerPH").style.display = "none";
+            document.getElementById("setScorePH").style.display = "none";
+            document.getElementById("btnSetTime").style.display = "none";
+            document.getElementById("btnSetScore").style.display = "none";
+            document.getElementById("setLivesPH").style.display = "block";
+            document.getElementById("btnBackToSettings").style.display = "block";
+        }
+
+        function setLives() {
+            if (isNaN(document.getElementById("livesSetting").value) || document.getElementById("livesSetting").value == "") {
+                alert("please insert a number");
+            }
+            else {
+                liveSetted = document.getElementById("livesSetting").value;
+                saveData();
+            }
+        }
+
+        function ScoreSettings() {
+
+            document.getElementById("setTimerPH").style.display = "none";
+            document.getElementById("setLivesPH").style.display = "none";
+            document.getElementById("btnSetTime").style.display = "none";
+            document.getElementById("btnSetLives").style.display = "none";
+            document.getElementById("setScorePH").style.display = "block";
+            document.getElementById("btnBackToSettings").style.display = "block";
+        }
+
+        function setScore() {
+
+            if (isNaN(document.getElementById("scoreSetting").value) || document.getElementById("scoreSetting").value == "") {
+                alert("please insert a number");
+            }
+            else {
+                scoreSetted = document.getElementById("scoreSetting").value;
+                saveData();
+            }
+        }
+
+        function NewGame() {//Start new game
+
+            timer = setTimeout(wrongAnswer, timeSetted);
+            init();
+            document.getElementById("Score").style.display = "block";
+            document.getElementById("answersPH").style.display = "block";
+            document.getElementById("imgPH").style.display = "block";
+            score = scoreCon;
+            if (livesCon != 0) {
+                lives = livesCon;
+            }
+            else {
+                lives = liveSetted;
+            }
+
+            document.getElementById("Score").innerHTML = "score: " + score + "<br /> life: " + lives + "<br />";
+            newQuestion()
+        }
+
+        function newQuestion() { //Creating a new question
+            clearInterval(timerShowed);
+            str = "Time left: "
+            document.getElementById("timerPH").innerHTML = str + ( timeSetted / 1000);
+            clearTimeout(timer);
+            document.getElementById("Score").innerHTML = "score: " + score + "<br /> life: " + lives + "<br />";
+            answers = [3];
+            qNum = -1;
+            cNum = -1;
+            ans = "";
+            while (ans == "") {
+                chara = Math.floor(Math.random() * (characters.length - 1));
+                cNum = chara;
+                questionNumber = Math.floor(Math.random() * (questions.length - 1));
+                qNum = questionNumber;
+                q = questions[questionNumber].question + " " + characters[chara].characterName;
+
+                switch (questionNumber) {
+                    case 0:
+                        if (characters[chara].siblings) {
+                            ans = characters[chara].siblings[0]; break
+                        }
+                        else
+                            break;
+                    case 1:
+                        if (characters[chara].killedBy) {
+                            ans = characters[chara].killedBy; break
+                        }
+                        else
+                            break;
+                    case 2:
+
+                        if (characters[chara].actorName) {
+                            ans = characters[chara].actorName; break
+                        }
+                        else
+                            break;
+                    case 3:
+
+                        if (characters[chara].killed) {
+                            ans = characters[chara].killed[0]; break
+                        }
+                        else
+                            break;
+                    case 4:
+                        if (characters[chara].houseName) {
+                            ans = characters[chara].houseName; break
+                        }
+                        else
+                            break;
+                }
+
+                imgTxt = "";
+                if (characters[chara].characterImageFull) {
+                    imgTxt = "<img src=" + characters[chara].characterImageFull + " />";
+                }
+                else {
+                    imgTxt = "<p> no photo to show<\p>"
+                }
+                document.getElementById('imgPH').innerHTML = imgTxt;
+            }
+
+            document.getElementById("questionPH").innerHTML = q + "? <br />";
+            document.getElementById("questionPH").style.display = "block";
+            document.getElementById("timerPH").style.display = "block";
+
+            answers = placeAnswers(answers);
+
+            document.getElementById("btnAnswer0").value = answers[0];
+            document.getElementById("btnAnswer1").value = answers[1];
+            document.getElementById("btnAnswer2").value = answers[2];
+            document.getElementById("btnAnswer3").value = answers[3];
+
+            timer = setTimeout(wrongAnswer, timeSetted);
+            counter = timeSetted / 1000;
+
+          
+            timerShowed =  setInterval("showTime()", 1000);
+            saveData();
+        }
+
+        function showTime() {
+            str= "Time left: "
+            counter--;
+            document.getElementById("timerPH").innerHTML = str + counter;
+            if (counter <= 0) {
+                clearInterval(timerShowed);
+                document.getElementById("timerPH").innerHTML = "";
+            }
+
+        }
+
+        function placeAnswers(answers) {//returns arr with shuffled answers- 1 right and 3 wrong
+
+            answers = wrongAnswers(qNum, cNum, ans);
+            answers.push(ans);
+            shuffleAnswers(answers);
+            return answers
+
+        }
+
+        function wrongAnswers(qNum, cNum, ans) {//returns arr with 3 wrong answers for the relevent qutestion
+            wrongArr = [3];
+            wrongArr[0] = "";
+            wrongArr[1] = "";
+            wrongArr[2] = "";
+            tempAns = "";
+            randNum = -1;
+
+            for (var i = 0; i < wrongArr.length; i++) {
+
+                while (wrongArr[i] == "") {
+                    randNum = Math.floor(Math.random() * (characters.length - 1));
+                    while (randNum == cNum)
+                        randNum = Math.floor(Math.random() * (characters.length - 1));
+
+                    switch (qNum) {
+
+                        case 0:
+                            if (characters[randNum].siblings) {
+                                tempAns = characters[randNum].siblings[Math.floor(Math.random() * (characters[randNum].siblings.length - 1))];
+                                if (tempAns != ans) {
+                                    wrongArr[i] = tempAns; break;
+                                }
+                                break;
+                            }
+                            else
+                                break;
+
+                        case 1:
+                            if (characters[randNum].killedBy) {
+                                tempAns = characters[randNum].killedBy;
+                                if (tempAns != ans) {
+                                    wrongArr[i] = tempAns; break;
+                                }
+                                break;
+                            }
+                            else
+                                break;
+
+                        case 2:
+
+                            if (characters[randNum].actorName) {
+                                tempAns = characters[randNum].actorName;
+                                if (tempAns != ans) {
+                                    wrongArr[i] = tempAns; break;
+                                }
+                                break;
+                            }
+                            else
+                                break;
+
+                        case 3:
+
+                            if (characters[randNum].killed) {
+                                tempAns = characters[randNum].killed[Math.floor(Math.random() * (characters[randNum].killed.length - 1))];
+                                if (tempAns != ans) {
+                                    wrongArr[i] = tempAns; break;
+                                }
+                                break;
+                            }
+                            else
+                                break;
+
+                        case 4:
+
+                            if (characters[randNum].houseName) {
+                                tempAns = characters[randNum].houseName;
+                                if (tempAns != ans) {
+                                    wrongArr[i] = tempAns; break;
+                                }
+                                break;
+                            }
+                            else
+                                break;
+                    }
+                }
+            }
+
+            return wrongArr;
+        }
+
+        function shuffleAnswers(answersArray) {//shuffles arr with 4 answers
+            var j, x, i;
+            for (i = answersArray.length - 1; i > 0; i--) {
+                j = Math.floor(Math.random() * (i + 1));
+                x = answersArray[i];
+                answersArray[i] = answersArray[j];
+                answersArray[j] = x;
+            }
+
+        }
+
+
+        function checkIfTrue(btn) {//checks if the answer clicked is true and action in advance
+            btnValue = document.getElementById(btn).value;
+            clearTimeout(timer);
+            clearInterval(timerShowed);
+            if (btnValue == ans) {
+                score = Number(score) + Number(scoreSetted);
+                newQuestion();
+            }
+            else {
+                wrongAnswer("wrong");
+            }
+
+
+
+
+
+
+        }
+
+
+
+        function wrongAnswer(reason) {//in case of wrong answer or time end
+            clearInterval(timerShowed);
+            clearTimeout(timer);
+            lives = lives - 1;
+            if (reason == "wrong") {//run out of time or wrong answer
+                alert("Wrong answer! The right answer is: " + ans);
+            }
+            else {
+                alert("You run out of time! The right answer is: " + ans);
+            }
+
+            if (score != 0) {//minus 10 points
+                score = Number(score - scoreSetted);
+            }
+
+            if (lives == 0) {//check if there are lives left
+                alert("you lose!");
+                init();
+                return;
+            }
+            else {
+                newQuestion();
+            }
+
+        }
+
+
+
+
+
+    </script>
+
+</body>
+
+</html>
